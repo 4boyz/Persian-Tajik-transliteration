@@ -11,11 +11,13 @@
 2.  https://github.com/k1n5-bt/tajik-farsi_translitilation
 3.  https://github.com/jakevictorp/tajik-farsi_translit
 
-Т5 модель
-Мультилингвальные модели
-Машинный перевод
-Статический машинный перевод (SMT)
-Модели выравнивания (IBM Brown et al., 1994; Och & Ney, 2000)
+## Погуглить
+
+- Т5 модель
+- Мультилингвальные модели
+- Машинный перевод
+- Статический машинный перевод (SMT)
+- Модели выравнивания (IBM Brown et al., 1994; Och & Ney, 2000)
 
 ## Проблемы
 
