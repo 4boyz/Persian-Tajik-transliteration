@@ -11,6 +11,12 @@
 2.  https://github.com/k1n5-bt/tajik-farsi_translitilation
 3.  https://github.com/jakevictorp/tajik-farsi_translit
 
+## Ссылки
+
+1. https://habr.com/ru/post/543412/
+2. https://statmt.org/
+
+
 ## Погуглить
 
 - Т5 модель
@@ -18,6 +24,8 @@
 - Машинный перевод
 - Статический машинный перевод (SMT)
 - Модели выравнивания (IBM Brown et al., 1994; Och & Ney, 2000)
+- GIZA++ для обучения выравниванию
+- POS-тегирование
 
 ## Проблемы
 
