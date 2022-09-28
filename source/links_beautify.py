@@ -11,7 +11,8 @@ class Beautifyer:
             writer.writerow([id, link])
 
     def __get_beauty_link(self, link):
-        return requests.get(link).url
+        if link: return requests.get(link).url
+        return ''
 
     def __get_last_link(self, content: str):
         return content.split(' ')[-1]
