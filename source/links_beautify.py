@@ -1,6 +1,7 @@
 import requests
 import csv
 import ast
+from time import sleep
 
 class Beautifyer:
     __from_path = None
@@ -12,7 +13,12 @@ class Beautifyer:
             writer.writerow([id, link])
 
     def __get_beauty_link(self, link):
-        if link: return requests.get(link).url
+        if not link: return ''
+        for i in range(10):
+            try:
+                return requests.get(link).url
+            except:
+                sleep(1)
         return ''
 
     def __get_last_link(self, content: str):
