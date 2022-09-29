@@ -1,5 +1,6 @@
 import requests
 import csv
+import ast
 
 class Beautifyer:
     __from_path = None
@@ -32,13 +33,13 @@ class Beautifyer:
 
             for row in reader:
                 id = int(row[0]) if row[0] else -1
-                first_links = row[3]
+                first_links = ast.literal_eval(row[3])
                 beauty_link = ''
 
                 if(last_id >= id): continue
 
                 if first_links:
-                    beauty_link = self.__get_beauty_link(first_links[2:-2])
+                    beauty_link = self.__get_beauty_link(first_links[-1])
                 else:
                     beauty_link = self.__get_beauty_link(self.__get_last_link(row[4]))
 
