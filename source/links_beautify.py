@@ -2,6 +2,7 @@ import requests
 import csv
 import ast
 from time import sleep
+from os.path import exists
 
 class Beautifyer:
     __from_path = None
@@ -25,6 +26,7 @@ class Beautifyer:
         return content.split(' ')[-1]
 
     def __get_last_writeble_index(self):
+        if not exists(self.__to_path): return -1
         with open(self.__to_path, mode='r', encoding='utf8') as file:
             last_line = csv.reader([file.readlines()[-1]], delimiter=',').__next__()
             if len(last_line) == 0: return -1
@@ -39,7 +41,7 @@ class Beautifyer:
 
             for row in reader:
                 id = int(row[0]) if row[0] else -1
-                first_links = ast.literal_eval(row[3])
+                first_links = ast.literal_eval(row[3] if row[3] else '0')
                 beauty_link = ''
 
                 if(last_id >= id): continue
@@ -58,8 +60,8 @@ class Beautifyer:
 
 if __name__ == "__main__":
     
-    TWITTER_LINKS = 'links\\default_tweet_tajik.csv'
-    BEAUTY_LINKS_CSV_PATH = 'links\\beauty_links_tajik.csv'
+    TWITTER_LINKS = 'links\\default_tweet_persian.csv'
+    BEAUTY_LINKS_CSV_PATH = 'links\\beauty_links_persian.csv'
 
     beauty = Beautifyer(TWITTER_LINKS, BEAUTY_LINKS_CSV_PATH)
     beauty.start()
