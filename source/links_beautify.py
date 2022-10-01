@@ -1,3 +1,5 @@
+import os.path
+
 import requests
 import csv
 import ast
@@ -60,8 +62,8 @@ class Beautifyer:
 
 if __name__ == "__main__":
     
-    TWITTER_LINKS = 'links\\default_tweet_persian.csv'
-    BEAUTY_LINKS_CSV_PATH = 'links\\beauty_links_persian.csv'
+    TWITTER_LINKS = os.path.dirname(os.path.dirname(__file__)) + '\\links\\default_tweet_tajik.csv'
+    BEAUTY_LINKS_CSV_PATH = os.path.dirname(os.path.dirname(__file__)) + '\\links\\beauty_links_tajik.csv'
 
     beauty = Beautifyer(TWITTER_LINKS, BEAUTY_LINKS_CSV_PATH)
     beauty.start()
