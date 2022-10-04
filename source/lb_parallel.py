@@ -1,4 +1,5 @@
 import multiprocessing as mp
+import os
 from os.path import exists
 import csv
 
@@ -26,20 +27,20 @@ def start_beautifyer_process(path_from: str, path_to: str):
 if __name__ == '__main__':
     
     # TWITTER_LINKS = 'links\\default_tweet_persian.csv'
-
+    path_to_root = os.path.dirname(os.path.dirname(__file__)) + '\\'
     PROCCESS_COUNT = 4
     processes: list[mp.Process] = []
     PATHS_FROM = [
-        'links\\default_tweet_persian.1.csv', 
-        'links\\default_tweet_persian.2.csv', 
-        'links\\default_tweet_persian.3.csv',
-        'links\\default_tweet_persian.4.csv', 
+        path_to_root + 'links\\default_tweet_persian.1.csv',
+        path_to_root + 'links\\default_tweet_persian.2.csv',
+        path_to_root + 'links\\default_tweet_persian.3.csv',
+        path_to_root + 'links\\default_tweet_persian.4.csv',
     ]
     PATH_TO = [
-        'links\\beauty_links_persian.1.csv',
-        'links\\beauty_links_persian.2.csv',
-        'links\\beauty_links_persian.3.csv',
-        'links\\beauty_links_persian.4.csv',
+        path_to_root + 'links\\beauty_links_persian.1.csv',
+        path_to_root + 'links\\beauty_links_persian.2.csv',
+        path_to_root + 'links\\beauty_links_persian.3.csv',
+        path_to_root + 'links\\beauty_links_persian.4.csv',
     ]
 
     mp.set_start_method('spawn')
