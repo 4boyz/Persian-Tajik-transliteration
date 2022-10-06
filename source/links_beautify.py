@@ -6,6 +6,7 @@ import ast
 from time import sleep
 from os.path import exists
 
+# «Удлинитель» коротких ссылок
 class Beautifyer:
     __from_path = None
     __to_path = None
