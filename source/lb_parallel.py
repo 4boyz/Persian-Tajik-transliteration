@@ -3,6 +3,8 @@ import os
 from os.path import exists
 import csv
 
+# «Удлинитель» коротких ссылок для запуска в 4 потоках
+
 from links_beautify import Beautifyer
 
 # def start_beautifyer_process(id, path_from: str, path_to: str, offset: int = 0, count: int = -1):

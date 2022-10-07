@@ -3,8 +3,9 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 from pathlib import Path
 
-filepath = Path('..*\projects\csv\out.csv')
+# Получение твитов таджикского BBC и персидского BBC
 
+filepath = Path('..*\projects\csv\out.csv')
 
 # (from:bbcpersian) until:2015-04-01 since:2009-09-01
 # (from:BBCTajikistan) until:2015-04-01 since:2009-09-01
