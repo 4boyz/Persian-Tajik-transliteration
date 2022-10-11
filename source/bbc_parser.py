@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-ARTICLES = 'links\\articles.csv'
-smpl_matched_links_equile_year = pd.read_csv('links\smpl_matched_links_equile_year.csv', index_col=0)
+ARTICLES = 'data\\articles.csv'
+smpl_matched_links_equile_year = pd.read_csv('data\\smpl_matched_links_equile_year.csv', index_col=0)
 articles = pd.DataFrame({'id': '',
                          'tj_article_title': '',
                          'tj_article_introduction': '',

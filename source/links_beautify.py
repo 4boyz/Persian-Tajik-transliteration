@@ -56,6 +56,30 @@ class Beautifyer:
 
                 print(f"{id}. {beauty_link}")
                 self.__insert_link(id, beauty_link)
+    
+    def __get_row_by_id(self, id: int, path: str or None = None):
+        pass
+
+    def fill_emptyes(self):
+        pass
+        # with open(self.__from_path, encoding='utf8') as file:
+        #     reader = csv.reader(file, delimiter=',')
+        #     reader.__next__()
+
+        #     for row in reader:
+        #         id = int(row[0]) if row[0] else -1
+        #         first_links = ast.literal_eval(row[3] if row[3] else '0')
+        #         beauty_link = ''
+
+        #         if(last_id >= id): continue
+
+        #         if first_links:
+        #             beauty_link = self.__get_beauty_link(first_links[-1])
+        #         else:
+        #             beauty_link = self.__get_beauty_link(self.__get_last_link(row[4]))
+
+        #         print(f"{id}. {beauty_link}")
+        #         self.__insert_link(id, beauty_link)
 
     def __init__(self, from_path, to_path):
         self.__from_path = from_path
@@ -63,8 +87,8 @@ class Beautifyer:
 
 if __name__ == "__main__":
     
-    TWITTER_LINKS = os.path.dirname(os.path.dirname(__file__)) + '\\links\\default_tweet_tajik.csv'
-    BEAUTY_LINKS_CSV_PATH = os.path.dirname(os.path.dirname(__file__)) + '\\links\\beauty_links_tajik.csv'
+    TWITTER_LINKS = os.path.dirname(os.path.dirname(__file__)) + '\\data\\default_tweet_tajik.csv'
+    BEAUTY_LINKS_CSV_PATH = os.path.dirname(os.path.dirname(__file__)) + '\\data\\beauty_links_tajik.csv'
 
     beauty = Beautifyer(TWITTER_LINKS, BEAUTY_LINKS_CSV_PATH)
     beauty.start()
