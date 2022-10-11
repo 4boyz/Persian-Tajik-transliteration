@@ -3,8 +3,8 @@ import requests
 from bs4 import BeautifulSoup
 import re
 
-ARTICLES = '../links/articles.csv'
-smpl_matched_links_equile_year = pd.read_csv('../links/smpl_matched_links_equile_year.csv', index_col=0)
+ARTICLES = 'links\\articles.csv'
+smpl_matched_links_equile_year = pd.read_csv('links\smpl_matched_links_equile_year.csv', index_col=0)
 articles = pd.DataFrame({'id': '',
                          'tj_article_title': '',
                          'tj_article_introduction': '',
@@ -13,7 +13,6 @@ articles = pd.DataFrame({'id': '',
                          'persian_article_introduction': '',
                          'persian__article_text': []
                          })
-
 
 def Tj_bbc(url):
     # пример: url = 'https://www.bbc.com/tajik/news/2015/03/150315_l16_l57_kerry_assad_negotiate'
@@ -40,7 +39,10 @@ def Persian_bbc(url):
 
 
 for index, row in smpl_matched_links_equile_year.iterrows():
-    temp = ([str(row['id'])] + Tj_bbc(row['link']) + Persian_bbc(row['equals_persian_links'][2:-2]))  # Уберем [' и ']
+    temp = ['','','','','','','']
+    try:
+        temp = ([str(row['id'])] + Tj_bbc(row['link']) + Persian_bbc(row['equals_persian_links'][2:-2]))  # Уберем [' и ']
+    except Exception:
+        print(Exception)
     articles.loc[len(articles)] = temp
-
-articles.to_csv(ARTICLES)
+    articles.to_csv(ARTICLES)
