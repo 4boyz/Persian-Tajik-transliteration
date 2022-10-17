@@ -7,16 +7,14 @@ CONTENT_COLUMN = 'Content'
 STATUS_CODE_COLUMN = 'StatusCode'
 
 class DumpReader:
-    @staticmethod
     def __create_file_name(row: dict) -> str:
         return f"{row[ID_COLUMN]}-{row[STATUS_CODE_COLUMN]}.gz"
 
-    @staticmethod
     def __parse_file_name(file_name: str) -> dict:
-        file_name_splited = file_name.split('-')
-        return { ID_COLUMN: int(file_name_splited[0]), STATUS_CODE_COLUMN : file_name_splited[1] }
+        file_name_splited = file_name.split('\\')[-1].split('-')
 
-    @staticmethod
+        return { ID_COLUMN: int(file_name_splited[0]), STATUS_CODE_COLUMN : file_name_splited[1][:-3] }
+
     def write_item(dir_path: str, row: dict) -> None:
         if not os.path.isdir(dir_path): os.mkdir(dir_path)
         path = os.path.join(dir_path, DumpReader.__create_file_name(row))
@@ -24,7 +22,6 @@ class DumpReader:
         file.write(row[CONTENT_COLUMN])
         file.close()
     
-    @staticmethod
     def read_item(path: str) -> dict:
         file = gzip.open(path, 'rb')
         content = file.read()
@@ -32,31 +29,64 @@ class DumpReader:
         parsed_file_name = DumpReader.__parse_file_name(path)
         return { CONTENT_COLUMN: content, **parsed_file_name}
 
-    @staticmethod
-    def read(dir_path: str, read_count=-1, read_span=0) -> list[dict]:
+    def read(dir_path: str, count=-1, offset=0) -> list[dict]:
+        """
+        Прочитать дамп.
+
+        :dir_path: Путь до директории дампа
+        :count: Количество файлов для чтения. -1 - Прочитать все.
+        :offset: Количество файлов для пропуска
+        :return: Формат возвращаемых данных: 
+        { 'id': 'id', 'Content': 'Content', 'StatusCode': 'StatusCode' }
+        """ 
         files = os.listdir(dir_path)
         data = []
-        index = read_span
+        index = offset
         files_count = 0
 
         for file_index, file in enumerate(files):
-            if files_count == read_count: break 
+            if files_count == count: break 
             if file_index < index: continue
-            data.append(DumpReader.read_item(file))
+            file_path = os.path.join(dir_path, file)
+            data.append(DumpReader.read_item(file_path))
+            files_count += 1
 
         return data
 
-    @staticmethod
     def write(dir_path: str, data: list[dict]) -> None:
+        """
+        Создание дампа.
+
+        :dir_path: Путь до папки дампа
+        :data: Данные для сжатия. Необходимый формат 
+        { 'id': 'id', 'Content': 'Content', 'StatusCode': 'StatusCode' }
+        """ 
         for index, row in enumerate(data):
             DumpReader.write_item(dir_path=dir_path, row=row)
 
-    @staticmethod
     def get_last_index(dir_path: str) -> int:
+        """
+        Получение последнего индекса в папке дампа
+
+        :dir_path: путь к директории дампа
+        """ 
         if not os.path.isdir(dir_path): return -1
         files = os.listdir(dir_path)
         if len(files) == 0: return -1
-        return DumpReader.__parse_file_name(files[-1])[ID_COLUMN]
+        files_indexes: list[int] = map(lambda x: DumpReader.__parse_file_name(x)[ID_COLUMN], files)
+        return max(files_indexes)
+
+    def save_to_html(path: str, to_path: str = 'sample.html') -> None:
+        """
+        Сохранение дампа страницы в HTML
+
+        :path: Путь до дампа страницы 
+        :to_path: Куда сохранить. По умолчанию 'sample.html'
+        """ 
+        content: bytes  = DumpReader.read_item(path)['Content']
+        file = open(to_path, "w", encoding="utf-8")
+        file.write(content.decode("utf-8"))
+        file.close()
 
 if __name__ == '__main__':
     import requests
