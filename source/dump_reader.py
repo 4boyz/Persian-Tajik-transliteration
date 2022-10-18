@@ -1,3 +1,4 @@
+from dataclasses import dataclass
 import gzip
 import os.path
 import os
@@ -7,21 +8,68 @@ CONTENT_COLUMN = 'Content'
 STATUS_CODE_COLUMN = 'StatusCode'
 
 class DumpReader:
+    def __init__(self, dir_path) -> None:
+        self.__dir_path = dir_path
+
+    def __str__(self) -> str:
+        return f"<DumpReader: {self.__dir_path}>"
+
+    @classmethod
+    def read(self, count=-1, offset=0) -> 'list[dict]':
+        """
+        Прочитать дамп.
+
+        :count: Количество файлов для чтения. -1 - Прочитать все.
+        :offset: Количество файлов для пропуска
+        :return: Формат возвращаемых данных: 
+        { 'id': 'id', 'Content': 'Content', 'StatusCode': 'StatusCode' }
+        """ 
+        return DumpReader.read(dir_path=self.__dir_path, count=count, offset=offset)
+
+    @classmethod
+    def write(self, data: 'list[dict]') -> None:
+        """
+        Создание дампа.
+
+        :data: Данные для сжатия. Необходимый формат 
+        { 'id': 'id', 'Content': 'Content', 'StatusCode': 'StatusCode' }
+        """ 
+        return DumpReader.write(dir_path=self.__dir_path, data=data)
+
+    @classmethod
+    def write_item(self, row: dict) -> None:
+        return DumpReader.write_item(dir_path=self.__dir_path, row=row)
+
+    @classmethod
+    def read_item(self, filename: str) -> dict:
+        """
+        Прочитать файл дампа.
+
+        :filename: Название файла
+        """ 
+        filename = filename if '.gz' in filename else '.'.join([filename, 'gz'])
+        path_to_file = os.path.join(self.__dir_path, filename)
+        return DumpReader.read_item(dir_path=path_to_file, row=row)
+
+    @staticmethod
     def __create_file_name(row: dict) -> str:
         return f"{row[ID_COLUMN]}-{row[STATUS_CODE_COLUMN]}.gz"
 
+    @staticmethod
     def __parse_file_name(file_name: str) -> dict:
         file_name_splited = file_name.split('\\')[-1].split('-')
 
         return { ID_COLUMN: int(file_name_splited[0]), STATUS_CODE_COLUMN : file_name_splited[1][:-3] }
 
+    @staticmethod
     def write_item(dir_path: str, row: dict) -> None:
         if not os.path.isdir(dir_path): os.mkdir(dir_path)
         path = os.path.join(dir_path, DumpReader.__create_file_name(row))
         file = gzip.open(path, 'wb')
         file.write(row[CONTENT_COLUMN])
         file.close()
-    
+
+    @staticmethod
     def read_item(path: str) -> dict:
         file = gzip.open(path, 'rb')
         content = file.read()
@@ -29,7 +77,8 @@ class DumpReader:
         parsed_file_name = DumpReader.__parse_file_name(path)
         return { CONTENT_COLUMN: content, **parsed_file_name}
 
-    def read(dir_path: str, count=-1, offset=0) -> list[dict]:
+    @staticmethod
+    def read(dir_path: str, count=-1, offset=0) -> 'list[dict]':
         """
         Прочитать дамп.
 
@@ -53,7 +102,8 @@ class DumpReader:
 
         return data
 
-    def write(dir_path: str, data: list[dict]) -> None:
+    @staticmethod
+    def write(dir_path: str, data: 'list[dict]') -> None:
         """
         Создание дампа.
 
@@ -64,6 +114,7 @@ class DumpReader:
         for index, row in enumerate(data):
             DumpReader.write_item(dir_path=dir_path, row=row)
 
+    @staticmethod
     def get_last_index(dir_path: str) -> int:
         """
         Получение последнего индекса в папке дампа
@@ -76,14 +127,18 @@ class DumpReader:
         files_indexes: list[int] = map(lambda x: DumpReader.__parse_file_name(x)[ID_COLUMN], files)
         return max(files_indexes)
 
-    def save_to_html(path: str, to_path: str = 'sample.html') -> None:
+    @staticmethod
+    def save_to_html(path: str=None, row: dict=None, to_path: str = 'sample.html') -> None:
         """
         Сохранение дампа страницы в HTML
 
         :path: Путь до дампа страницы 
+        :row: Страница
+        (:path: или :row:)
         :to_path: Куда сохранить. По умолчанию 'sample.html'
         """ 
-        content: bytes  = DumpReader.read_item(path)['Content']
+        row = row if row else DumpReader.read_item(path)
+        content: bytes  = row['Content']
         file = open(to_path, "w", encoding="utf-8")
         file.write(content.decode("utf-8"))
         file.close()
