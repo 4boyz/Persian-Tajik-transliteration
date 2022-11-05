@@ -30,7 +30,7 @@ class title_translator:
             [index, code] = parse("{}-{}.gz", file)
             if(index in translated_indexes):
                 continue
-            if(int(code) != 200):
+            if(code != '200'):
                 continue
             fullpath = os.path.join(dumps_path, file)
             yield self.__translate_file(index, fullpath)
