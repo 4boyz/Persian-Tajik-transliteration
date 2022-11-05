@@ -83,11 +83,19 @@ class title_translator:
     def start(self, workers_count):
         asyncio.run(self.__coro(workers_count))
 
-def tajik_title_parser(soup):
+def tajik_title_parser(soup: BeautifulSoup):
+    res = soup.find("h1", class_="story-body__h1")
+    if not res: res = soup.find("h1", class_="gallery-intro__h1")
+    
     return soup.find("h1", class_="story-body__h1")
 
-def persian_title_parser(soup):
+def persian_title_parser(soup: BeautifulSoup):
     title = soup.find("h1", class_="bbc-1gvq3vt e1p3vdyi0")
+    if not title: title = soup.find("strong", class_="ewk8wmc0 bbc-v5mdtt eglt09e1")
+    if not title: title = soup.find("span", id_="promo-persianworld201408140820_u08_netanyahu_vows_campaign_cont-1")
+    if not title: title = soup.find("span", class_="headline")
+    if not title: title = soup.find("h1")
+    return title
 
     if title == None:
         title = soup.find("strong", class_="ewk8wmc0 bbc-v5mdtt eglt09e1")
