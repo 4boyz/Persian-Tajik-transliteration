@@ -1,3 +1,8 @@
 source/__pycache__
 data/persian_dump
 data/tajik_dump
+
+persian_titles_translated_embedings.csv
+tajik_titles_translated_embedings.csv
+persian_titles_calced.csv
+tajik_titles_calced.csv
