@@ -6,7 +6,7 @@ class TjPersChecker:
     _pers_let = [Normalizer().normalize(x) for x in 'ب گ د ﺽ ﺫ ﺯ ک ل م ن پ ر ﺙ ﺹ ﺱ ﺕ ف خ چ ژ ش غ ق ه ج'.split()]
 
     @staticmethod
-    def __str_changer(tokens: str, lang: str):
+    def str_changer(tokens: str, lang: str) -> str:
         changed_str = []
         if lang == "tj":
             for l in tokens:
@@ -20,17 +20,17 @@ class TjPersChecker:
         return "".join(changed_str)
 
     @staticmethod
-    def check(tj_sentance: str, pers_sentance: str) -> float:
-        return ratio(TjPersChecker.__str_changer(tj_sentance, lang="tj"), TjPersChecker.__str_changer(pers_sentance, lang="pers"))
+    def check(tj_sentence: str, pers_sentence: str) -> float:
+        return ratio(TjPersChecker.str_changer(tj_sentence, lang="tj"), TjPersChecker.str_changer(pers_sentence, lang="pers"))
     
     @staticmethod
-    def check_lists(tj_sentances: list[str], pers_sentances: list[str]) -> list[float]:
-        return [TjPersChecker.check(tj_sentance=tj_sen, pers_sentance=per_sen) for tj_sen, per_sen in zip(tj_sentances, pers_sentances)]
+    def check_lists(tj_sentences: list[str], pers_sentences: list[str]) -> list[float]:
+        return [TjPersChecker.check(tj_sentence=tj_sen, pers_sentence=per_sen) for tj_sen, per_sen in zip(tj_sentences, pers_sentences)]
     
 
 if __name__ == '__main__':
     
-    pers_sentances = [
+    pers_equals_sentences = [
         'چای و قهوه خطر بیماری های قلبی را کاهش می دهد',
         'شواهد تازه نشان می دهد که اشخاصی که در روز چندین فنجان چای یا قهوه می نوشند کمتر احتمال دارد به بیماری های قلبی مبتلا شوند',
         'این شواهد حاصل سیزده سال مطالعه بر روی چهل هزار نفر در هلند است',
@@ -48,7 +48,7 @@ if __name__ == '__main__':
         'الین میسون می افزاید: " ولی کشیدن یک سیگار همراه با قهوه، تمام این منافع را از بین می برد. علاوه بر این بعید به نظر می رسد که نوشیدن مقدار زیادی چای در حالی که شخص ساعت ها روی صندلی راحتی لم داده و تلویزیون تماشا می کند، به محفاظت از قلب کمک چندانی بکند'
     ]
 
-    tajik_sentances = [
+    tajik_equals_sentences = [
         'Чой ва қаҳва хатари бемориҳои қалбиро коҳиш медиҳад',
         'Шавоҳиди тоза нишон медиҳад, ки ашхосе, ки дар рӯз чандин финҷон чой ё қаҳва менӯшанд, камтар эҳтимол дорад ба бемории қалбӣ мубтало шаванд',
         'Ин шавоҳид ҳосили сенздаҳ соли мутолеъа бар рӯйи чиҳил ҳазор нафар дар Ҳуланд аст',
@@ -66,4 +66,4 @@ if __name__ == '__main__':
         'Эллен Мейсон меафзояд: “Вале кашидани як сигор ҳамроҳ бо қаҳва тамоми ин манофеъро аз байн мебарад. Илова бар ин баъид ба назр мерасад, ки нӯшидани миқдори зиёде чой дар ҳоле ки шахс соъатҳо рӯйи сандалии роҳате лам дода ва телевизиюн тамошо мекунад ба муҳофизат аз қалб кумаки чандоне бикунад'
     ]
 
-    print(TjPersChecker.check_lists(tj_sentances=tajik_sentances, pers_sentances=pers_sentances))
+    print(TjPersChecker.check_lists(tj_sentences=tajik_equals_sentences, pers_sentences=pers_equals_sentences))
