@@ -33,6 +33,13 @@ class DumpReader:
         file.close()
 
     @staticmethod
+    def read_item_by_id(dir_path: str, id: Any) -> dict:
+        files = os.listdir(dir_path)
+        item_name = DumpReader.__create_file_name(row={ID_COLUMN: id, STATUS_CODE_COLUMN: 200})
+        if item_name not in files: raise Exception("Файл не найден в дампе")
+        return DumpReader.read_item(os.path.join(dir_path, item_name))
+        
+    @staticmethod
     def read_item(path: str) -> dict:
         file = gzip.open(path, 'rb')
         content = file.read()
