@@ -1,5 +1,6 @@
 from Levenshtein import ratio
 from parsivar import Normalizer
+from typing import Any
 
 class TjPersChecker:
     _tj_let = 'б г д з з з к л м н п р с с с т ф х ч ж ш ғ қ ҳ ҷ'.split()
@@ -24,8 +25,18 @@ class TjPersChecker:
         return ratio(TjPersChecker.str_changer(tj_sentence, lang="tj"), TjPersChecker.str_changer(pers_sentence, lang="pers"))
     
     @staticmethod
-    def check_lists(tj_sentences: list[str], pers_sentences: list[str]) -> list[float]:
+    def check_lists(tj_sentences: 'list[str]', pers_sentences: 'list[str]') -> 'list[float]':
         return [TjPersChecker.check(tj_sentence=tj_sen, pers_sentence=per_sen) for tj_sen, per_sen in zip(tj_sentences, pers_sentences)]
+    
+    @staticmethod
+    def match_sentances(tj_sentences: 'list[str]', pers_sentences: 'list[str]') -> 'list[dict[str, Any]]':
+        matched_sentances = []
+        is_tj_less = len(pers_sentences) > len(tj_sentences)
+        main_sentances = tj_sentences if is_tj_less else pers_sentences
+        second_sentances = pers_sentences if is_tj_less else tj_sentences
+        for sentance in main_sentances:
+            
+
     
 
 if __name__ == '__main__':
