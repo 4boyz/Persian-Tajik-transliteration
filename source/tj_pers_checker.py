@@ -30,17 +30,17 @@ class TjPersChecker:
         return [TjPersChecker.check(tj_sentence=tj_sen, pers_sentence=per_sen) for tj_sen, per_sen in zip(tj_sentences, pers_sentences)]
     
     @staticmethod
-    def match_sentances(tj_sentences: 'list[str]', pers_sentences: 'list[str]') -> 'list[dict[str, Any]]':
+    def match_sentences(tj_sentences: 'list[str]', pers_sentences: 'list[str]') -> 'list[dict[str, Any]]':
         """
         Сопоставление любого количества предложений в любом порядке предложений.
         Ищутся предложения с максимальным совпадением.
         На выходе массив объектов формата {'tj': предложение на таджикском, 'pers' : предложение на персидском, 'match' : схожесть }
         """
-        matched_sentances = []
+        matched_sentences = []
         is_tj_less = len(pers_sentences) > len(tj_sentences)
-        main_sentances = tj_sentences if is_tj_less else pers_sentences
-        second_sentances = pers_sentences if is_tj_less else tj_sentences
-        for sentance in main_sentances:
+        main_sentences = tj_sentences if is_tj_less else pers_sentences
+        second_sentences = pers_sentences if is_tj_less else tj_sentences
+        for sentance in main_sentences:
           matched_sentence = reduce(lambda sp_a, sp_b: sp_a if sp_a['match'] > sp_b['match'] else sp_b, [  # type: ignore
             {
               'pers' if is_tj_less else 'tj' : sec_sentence, 
@@ -48,10 +48,10 @@ class TjPersChecker:
                 TjPersChecker.check(tj_sentence=sentance, pers_sentence=sec_sentence) if is_tj_less else 
                 TjPersChecker.check(tj_sentence=sec_sentence, pers_sentence=sentance)
             } 
-            for sec_sentence in second_sentances
+            for sec_sentence in second_sentences
           ])
-          matched_sentances.append({'tj' if is_tj_less else 'pers' : sentance, **matched_sentence})       # type: ignore
-        return matched_sentances
+          matched_sentences.append({'tj' if is_tj_less else 'pers' : sentance, **matched_sentence})       # type: ignore
+        return matched_sentences
             
 
 if __name__ == '__main__':
@@ -183,4 +183,4 @@ if __name__ == '__main__':
         'Эллен Мейсон, аз бунёди қалби Бритониё мегӯяд: “Мутолеъоти ба амал омада тақвияткунандаи ин фарзия аст, ки нӯшидани қаҳва ва чой дар ҳадди мутаъориф барои бештари мардум безарар аст ва ҳатто хатари ибтило ба бемории қалбӣ ё марг дар асари ин бемориро коҳиш медиҳад',
     ]
 
-    print(list(map(lambda x: x['match'], TjPersChecker.match_sentances(tajik_equals_sentences_shuffled, pers_equals_sentences_shuffled))))   
+    print(list(map(lambda x: x['match'], TjPersChecker.match_sentences(tajik_equals_sentences_shuffled, pers_equals_sentences_shuffled))))   
