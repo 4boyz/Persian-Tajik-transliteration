@@ -30,7 +30,7 @@ class TjPersChecker:
         return [TjPersChecker.check(tj_sentence=tj_sen, pers_sentence=per_sen) for tj_sen, per_sen in zip(tj_sentences, pers_sentences)]
     
     @staticmethod
-    def match_sentences(tj_sentences: 'list[str]', pers_sentences: 'list[str]') -> 'list[dict[str, Any]]':
+    def match_sentences(tj_sentences: 'list[str]', pers_sentences: 'list[str]', other_info: 'dict[str, Any]'={}) -> 'list[dict[str, Any]]':
         """
         Сопоставление любого количества предложений в любом порядке предложений.
         Ищутся предложения с максимальным совпадением.
@@ -50,7 +50,7 @@ class TjPersChecker:
             } 
             for sec_sentence in second_sentences
           ])
-          matched_sentences.append({'tj' if is_tj_less else 'pers' : sentance, **matched_sentence})       # type: ignore
+          matched_sentences.append({'tj' if is_tj_less else 'pers' : sentance, **matched_sentence, **other_info})       # type: ignore
         return matched_sentences
             
 
