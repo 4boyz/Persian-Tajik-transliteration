@@ -1,0 +1,2 @@
+Чтобы прочитать дампы советую воспользоваться классом *DumpReader* в **dump_reader.py**. Примеры использования есть в **dump_reader_example.ipynb**
+Гугл диск не позволяет заливать файлы с исходным кодом, поэтому скачать файлы можно в нашем репозитории https://github.com/4boyz/Persian-Tajik-transliteration
