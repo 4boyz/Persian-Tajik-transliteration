@@ -1,4 +1,4 @@
-from typing import Any
+from typing import Any, Iterable
 import gzip
 import os.path
 import os
@@ -51,7 +51,7 @@ class DumpReader:
         return { CONTENT_COLUMN: content, **parsed_file_name}
 
     @staticmethod
-    def read(dir_path: str, count=-1, offset=0) -> 'list[dict]':
+    def read(dir_path: str, count=-1, offset=0) -> 'Iterable[dict]':
         """
         Прочитать дамп.
 
@@ -62,7 +62,6 @@ class DumpReader:
         { 'id': 'id', 'Content': 'Content', 'StatusCode': 'StatusCode' }
         """ 
         files = os.listdir(dir_path)
-        data = []
         index = offset
         files_count = 0
 
@@ -70,10 +69,8 @@ class DumpReader:
             if files_count == count: break 
             if file_index < index: continue
             file_path = os.path.join(dir_path, file)
-            data.append(DumpReader.read_item(file_path))
+            yield DumpReader.read_item(file_path)
             files_count += 1
-
-        return data
 
     @staticmethod
     def write(dir_path: str, data: 'list[dict]') -> None:
