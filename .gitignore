@@ -1,6 +1,7 @@
 source/__pycache__
 data/persian_dump
 data/tajik_dump
+data/temp
 
 sentence_to_sentence.csv
 persian_titles_translated_embedings.csv
