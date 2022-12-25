@@ -52,7 +52,39 @@ class TjPersChecker:
           ])
           matched_sentences.append({'tj' if is_tj_less else 'pers' : sentance, **matched_sentence, **other_info})       # type: ignore
         return matched_sentences
-            
+    
+    @staticmethod
+    def match_sentences_tuned(tj_sentences_prepared: 'list[str]', pers_sentences_prepared: 'list[str]', other_info: 'dict[str, Any]'={}) -> 'list[dict[str, Any]]':
+        """
+        Сопоставление любого количества предложений в любом порядке предложений.
+        Оптимизированный вариант. Строки должны быть предварительно обработаны методом str_changer.
+        Ищутся предложения с максимальным совпадением.
+        На выходе массив объектов формата {'tj': предложение на таджикском, 'pers' : предложение на персидском, 'match' : схожесть }
+        """
+        if len(pers_sentences_prepared) > len(tj_sentences_prepared):
+            matched_sentences = [None] * len(tj_sentences_prepared)
+            for idx, sentance in enumerate(tj_sentences_prepared):
+                matched_sentence = reduce(lambda sp_a, sp_b: sp_a if sp_a['match'] > sp_b['match'] else sp_b, [  # type: ignore
+                    {
+                        'pers' : sec_sentence, 
+                        'match' : ratio(sentance, sec_sentence)
+                    } 
+                    for sec_sentence in pers_sentences_prepared
+                ])
+                matched_sentences[idx] = {'tj' : sentance, **matched_sentence, **other_info} # type: ignore   
+            return matched_sentences # type: ignore  
+        else:
+            matched_sentences = [None] * len(pers_sentences_prepared)
+            for idx, sentance in enumerate(pers_sentences_prepared):
+                matched_sentence = reduce(lambda sp_a, sp_b: sp_a if sp_a['match'] > sp_b['match'] else sp_b, [  # type: ignore
+                    {
+                        'tj' : sec_sentence,
+                        'match' : ratio(sec_sentence, sentance)
+                    } 
+                    for sec_sentence in tj_sentences_prepared
+                ])
+                matched_sentences[idx] = {'pers' : sentance, **matched_sentence, **other_info}       # type: ignore
+            return matched_sentences # type: ignore  
 
 if __name__ == '__main__':
     
