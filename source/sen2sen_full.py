@@ -83,7 +83,7 @@ if not pers_prep:
 tj_parts = np.array_split(tj_prep, PARTS_COUNTS)
 for index, tj_part in enumerate(tj_parts):
     if os.path.isfile(RESULT_PATH(index)): continue
-    print(f"{datetime.now()} Parallel part {index}")
+    print(f"{datetime.now()} Parallel part {index}/{PARTS_COUNTS}")
     result_part = Parallel(n_jobs=THREADS)(delayed(TjPersChecker.match_sentences_tuned)([tj_sen], pers_prep) for tj_sen in tj_part)
     pickle.dump(result_part, open(RESULT_PATH(index), "wb"))
 
